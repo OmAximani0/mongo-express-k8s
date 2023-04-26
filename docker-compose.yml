@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+
+  dashboard:
+    image: mongo-express
+    ports:
+      - "8081:8081"
+    restart: always
+    environment:
+      - ME_CONFIG_OPTIONS_EDITORTHEME=ambiance
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=root
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=password
+    networks:
+      - mongo_express_network
+    depends_on:
+      - mongodb
+  
+  mongodb:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    networks:
+      - mongo_express_network
+    volumes:
+      - mongodb_volume:/data/db
+
+networks:
+  mongo_express_network:
+
+volumes:
+  mongodb_volume:
